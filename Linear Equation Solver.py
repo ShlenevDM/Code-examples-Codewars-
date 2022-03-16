@@ -7,7 +7,6 @@ variables = set()
 for eq in equations:
     variables = variables | set(re.findall(r'[a-zA-Z]+', eq))
 variables = sorted(list(variables))
-# print(variables)
 
 # verify number of equations and variables
 n = len(variables)
@@ -21,7 +20,7 @@ B = [0] * n
 # parsing of the equation
 def matrix_row(eqs):
     for row_number in range(n):
-        parsed = re.split('([+=-])', equations[row_number])
+        parsed = re.split('([+=-])', eqs[row_number])
         c = 1
         for i in range(len(parsed)):
             if parsed[i].isdigit() and parsed[i - 1] == '-':
@@ -41,22 +40,19 @@ def matrix_row(eqs):
                     A[row_number][column_number] += c * int(a)
 
 
-matrix_row(equations)
-print(A)
-print(B)
-"""def sum_coef(regex, eq):
-    return sum(map(int, re.findall(regex, eq)))
+matrix_row(equations)  # not to forget to call this function
 
-# fill matrices with coefficients
-for i in range(n):
-    left, right = re.split(r'=', equations[i])
-    B[i] = sum_coef(r'[+-]?\d+\b', right) - sum_coef(r'[+-]?\d+\b', left)
+# minor
+def minor(m, i, j):
+    return [row[:j] + row[j + 1:] for row in m[:i] + m[i + 1:]]
 
-print(B)
 
-eq = re.split('([+-])', 'x-y+3x-1')
-for v in variables:
-    for i in range(len(eq)):
-        if v in eq[i] and eq[i - 1] == '-': print('-'+eq[i].strip(v))
-        elif v in eq[i]: print(eq[i].strip(v))
-    print()"""
+# det
+def det(matrix):
+    if len(matrix) == 1:
+        return matrix[0][0]
+    elif len(matrix) == 2:
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    else:
+        return sum(matrix[0][i] *(-1) ** i * det(minor(matrix, 0, i)) for i in range(len(matrix)))
+
