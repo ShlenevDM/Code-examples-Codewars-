@@ -2,6 +2,22 @@ import re
 
 equations = ("2x-y+3x=-2y+3x+9y", "-y+x+2y=5", "-2y+2x+4y=10")
 
+
+# minor
+def minor(m, i, j):
+    return [row[:j] + row[j + 1:] for row in m[:i] + m[i + 1:]]
+
+
+# det
+def det(matrix):
+    if len(matrix) == 1:
+        return matrix[0][0]
+    elif len(matrix) == 2:
+        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
+    else:
+        return sum(matrix[0][i] * (-1) ** i * det(minor(matrix, 0, i)) for i in range(len(matrix)))
+
+
 # find all variables
 variables = set()
 for eq in equations:
@@ -41,43 +57,32 @@ def matrix_row(eqs):
 
 matrix_row(equations)  # fill the matrix with coefficients
 
-A_B = [A[i] + [B[i]] for i in range(m)]
-#print(A_B)
-for i in range(m):
-    for j in range(n + 1):
-        if A_B[i][j] == 0:
-            continue
+# delete repeated equations
+if m > n:
+    A_B = [A[i] + [B[i]] for i in range(m)]
+    for i in range(m):
+        for j in range(n + 1):
+            if A_B[i][j] == 0:
+                continue
+            else:
+                a = A_B[i][j]
+                break
+        for j in range(n + 1):
+            A_B[i][j] /= a
+
+    i = 0
+    while i < m:
+        if A_B.count(A_B[i]) > 1:
+            A.remove(A[i])
+            B.remove(B[i])
+            A_B.remove(A_B[i])
+            m -= 1
         else:
-            a = A_B[i][j]
-            break
-    for j in range(n + 1):
-        A_B[i][j] /= a
-#print(A_B)
+            i += 1
 
-i = 0
-while i < m:
-    if A_B.count(A_B[i]) > 1:
-        A.remove(A[i])
-        B.remove(B[i])
-        A_B.remove(A_B[i])
-        m -= 1
-    else:
-        i += 1
+# verify that system is solvable
+"""if m != n:
+    return"""
 
-print(A)
-print(B)
-
-
-# minor
-def minor(m, i, j):
-    return [row[:j] + row[j + 1:] for row in m[:i] + m[i + 1:]]
-
-
-# det
-def det(matrix):
-    if len(matrix) == 1:
-        return matrix[0][0]
-    elif len(matrix) == 2:
-        return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
-    else:
-        return sum(matrix[0][i] * (-1) ** i * det(minor(matrix, 0, i)) for i in range(len(matrix)))
+"""if det(A) == 0:
+    return"""
