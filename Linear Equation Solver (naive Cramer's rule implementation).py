@@ -1,3 +1,8 @@
+"""numpy, copy are disabled
+this is a working algorithm, although it's to slow because of enormous complexity of calculation of
+determinant for big systems, so it times out on actual tests"""
+
+
 import re
 
 
