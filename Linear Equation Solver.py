@@ -1,7 +1,11 @@
 import re
+from copy import deepcopy
 
-equations = ("2x-y+3x=-2y+3x+9y", "-y+x+2y=5", "-2y+2x+4y=10")
+equations = ("2x=4")
 
+# quick fix for one string equations, doubled equation will be deleted later
+if isinstance(equations, str):
+    equations = [equations for _ in range(2)]
 
 # minor
 def minor(m, i, j):
@@ -30,7 +34,6 @@ m = len(equations)
 # initialize matrices
 A = [[0 for column_number in range(n)] for row in range(m)]
 B = [0] * m
-
 
 # parsing of the equation
 def matrix_row(eqs):
@@ -65,10 +68,10 @@ if m > n:
             if A_B[i][j] == 0:
                 continue
             else:
-                a = A_B[i][j]
+                b = A_B[i][j]
                 break
         for j in range(n + 1):
-            A_B[i][j] /= a
+            A_B[i][j] /= b
 
     i = 0
     while i < m:
@@ -79,6 +82,8 @@ if m > n:
             m -= 1
         else:
             i += 1
+    n = len(variables)
+    m = len(equations)
 
 # verify that system is solvable
 """if m != n:
@@ -86,3 +91,14 @@ if m > n:
 
 """if det(A) == 0:
     return"""
+
+# Cramer's Rule
+d = det(A)
+res = {}
+for column_number in range(n):
+    AB = deepcopy(A)
+    for row_number in range(n):
+        AB[row_number][column_number] = B[row_number]
+    res[variables[column_number]] = det(AB) / d
+
+print(res)
