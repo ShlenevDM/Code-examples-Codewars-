@@ -1,5 +1,9 @@
 import re
-from copy import deepcopy
+
+
+# emulate deepcopy
+def deepcopy(a):
+    return a if not isinstance(a, list) else list(map(deepcopy, a))
 
 
 def minor(m, i, j):
@@ -28,6 +32,9 @@ def solve(equations):
 
     n = len(variables)
     m = len(equations)
+    # verify that system is solvable
+    if m > n:
+        return
 
     # initialize matrices
     A = [[0 for column_number in range(n)] for row in range(m)]
@@ -82,15 +89,10 @@ def solve(equations):
         n = len(variables)
         m = len(equations)
 
-    # verify that system is solvable
-    """if m != n:
-        return
-
-    if det(A) == 0:
-        return"""
-
     # Cramer's Rule
     d = det(A)
+    if d == 0:
+        return
     res = {}
     for column_number in range(n):
         AB = deepcopy(A)
@@ -100,5 +102,5 @@ def solve(equations):
 
     return res
 
-equations = ("2x+8y=4", "-x+4y=14")
+equations = "x+y=7z-1", "6x+z=-3y", "4y+10z=-8x"
 print(solve(equations))
