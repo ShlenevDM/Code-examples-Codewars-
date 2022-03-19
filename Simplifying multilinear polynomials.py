@@ -1,6 +1,6 @@
 import re
 
-poly = "-a+52ab+3a-c-2a-3ba"
+poly = "a+ca-ab"
 
 var = list(set([''.join(sorted(el)) for el in re.findall(r'[a-z]+', poly)]))
 #print(var)
@@ -23,3 +23,5 @@ for i in range(len(var)):
 
 print(coefficients)
 
+sorted_variables = sorted(coefficients, key=lambda x: (len(x), x))
+print(sorted_variables)
