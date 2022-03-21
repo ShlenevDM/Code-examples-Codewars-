@@ -1,4 +1,5 @@
-import numpy as np  # blocked in some katas
+import numpy as np  # disabled in some katas
+from functools import reduce
 
 """Matrix Addition
 https://www.codewars.com/kata/526233aefd4764272800036f/python"""
@@ -16,11 +17,36 @@ https://www.codewars.com/kata/573248f48e531896770001f9/python"""
 def matrix_product(a, b):
     n1, m1 = len(a), len(a[0])
     n2, m2 = len(b), len(b[0])
-    print(n1, m1)
     if m1 != n2:
         return -1
     else:
         return [[sum(a[i][k] * b[k][j] for k in range(m1)) for j in range(m2)] for i in range(n1)]
+
+
+"""Matrix Exponentiation
+https://www.codewars.com/kata/5791bdba3467db61ff000040/train/python"""
+
+
+def calc(matrix, n):
+    prods = []
+    i = 0
+    while n > 0:
+        if n % 2:
+            res = matrix
+            for k in range(i):
+                res = matrix_product(res, res)
+            prods.append(res)
+        n //= 2
+        i += 1
+    return reduce(matrix_product, prods)
+
+
+def calc2(matrix, n):
+    """slow solution, doesn't pass the tests, works fine with low n"""
+    res = matrix
+    for i in range(n - 1):
+        res = matrix_product(res, matrix)
+    return res
 
 
 """Matrix Transpose
