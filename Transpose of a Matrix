@@ -10,7 +10,7 @@ print(transpose([['d', 'a', 11, 9, 5, 15, 3, 11], [11, 'f', 'a', 'd', 13, 'e', 1
 
 def transpose2(arr):
     """without numpy"""
-    return [[row[i] for row in arr] for i in range(len(arr))]
+    return [[row[i] for row in arr] for i in range(len(arr[0]))]
 
 
 matrix1 = [[7,  1,  4],
