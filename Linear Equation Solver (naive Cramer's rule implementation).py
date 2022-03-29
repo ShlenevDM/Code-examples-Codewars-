@@ -51,6 +51,7 @@ def solve(equations):
             parsed = re.split('([+=-])', eqs[row_number])
             c = 1
             for i in range(len(parsed)):
+                if parsed[i] == '=': c = -1
                 if parsed[i].isdigit() and parsed[i - 1] == '-':
                     B[row_number] -= c * int(parsed[i])
                 elif parsed[i].isdigit():
