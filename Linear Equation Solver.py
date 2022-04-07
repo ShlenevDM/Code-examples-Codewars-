@@ -1,5 +1,5 @@
 import re
-equations = "x+y=7z-1", "6x+z=-3y", "4y+10z=-8x"
+equations = "x+y=7z-1", "6x+z=-3y", "4y+1z=-8x"
 
 
 # find all variables
@@ -13,7 +13,8 @@ m = len(equations)
 #print(n, m)
 
 # initialize the matrix
-A = [[0 for column_number in range(n + 1)] for row in range(m)]
+A = [[0 for col in range(n)] for row in range(m)]
+B = [0] * m
 
 for row_number in range(m):
     parsed = re.split('([+=-])', equations[row_number])
@@ -21,9 +22,9 @@ for row_number in range(m):
     for i in range(len(parsed)):
         if parsed[i] == '=': c = 1
         if parsed[i].isdigit() and parsed[i - 1] == '-':
-            A[row_number][n] -= c * int(parsed[i])
+            B[row_number] -= c * int(parsed[i])
         elif parsed[i].isdigit():
-            A[row_number][n] += c * int(parsed[i])
+            B[row_number] += c * int(parsed[i])
     for column_number in range(n):
         var = variables[column_number]
         c = 1  # positive before =, negative after =
@@ -36,20 +37,15 @@ for row_number in range(m):
                 a = parsed[i].strip(var) or 1
                 A[row_number][column_number] += c * int(a)
 
-print(A)
+print('A: ')
+for row in A:
+    print(row)
+print()
+print('B:', B)
 
-D = []
-
-for column_number in range(n):
-    a = max(A[row_number][column_number] for row_number in range(len(A)))
-    i = [A[row_number][column_number] for row_number in range(len(A))].index(a)
-    #for j in range(n + 1): A[i][j] /= a
-    D.append(A.pop(i))
-
-for row in D: print(row)
-
-for row in D:
-    pass
-
+for col in range(n):
+    a = max(abs(A[row][col]) for row in range(col, m))
+    i = [abs(A[row][col]) for row in range(len(A))].index(a)
+    print(i)
 
 
