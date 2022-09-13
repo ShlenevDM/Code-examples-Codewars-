@@ -5,8 +5,34 @@ def solve(system):
     A = [[Fraction(x) for x in row.split()] for row in system.split('\n')]
     n, m = len(A), len(A[0]) - 1
 
+    row, col = 0, 0
+
+    while row < n:
+        if A[row] == [0] * (m + 1):
+            row += 1
+        elif A[row][:-1] == [0] * m and A[-1] != 0:
+            return 'SOL=NONE'
+
+        while A[row][col] == 0 and col < m:
+            for i in range(row + 1, n):
+                if A[i][row] != 0:
+                    A[i], A[row] = A[row], A[i]
+                    break
+            else:
+                col += 1
+
+        pivot = A[row][col]
+        A[row] = [el / pivot for el in A[row]]
+        for j in range(row + 1, n):
+            c = A[j][row]
+            for k in range(row, m + 1):
+                A[j][k] -= c * A[row][k]
+
+        row += 1
+        col += 1
+
     # from A to U
-    for i in range(n):
+    """for i in range(n):
         pivot = A[i][i]
         if pivot == 0:
             for row in range(i, n):
@@ -18,7 +44,7 @@ def solve(system):
             for j in range(i + 1, n):
                 c = A[j][i]
                 for k in range(i, m + 1):
-                    A[j][k] -= c * A[i][k]
+                    A[j][k] -= c * A[i][k]"""
 
     print(*A, sep='\n')
     print()
