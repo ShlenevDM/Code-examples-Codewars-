@@ -5,6 +5,8 @@ def solve(system):
     A = [[Fraction(x) for x in row.split()] for row in system.split('\n')]
     n, m = len(A), len(A[0]) - 1
 
+    col_space = []
+    row_space = []
     # from A to U
     row, col = 0, 0
 
@@ -29,12 +31,37 @@ def solve(system):
                 for k in range(col, m + 1):
                     A[j][k] -= c * A[row][k]
 
+            row_space.append(row)
+            col_space.append(col)
             row += 1
             col += 1
 
     print(*A, sep='\n')
     print()
-    return A
+
+    # from U to R
+    for (row, col) in zip(row_space, col_space):
+        for j in range(row):
+            c = A[j][col]
+            for k in range(col, m + 1):
+                A[j][k] -= c * A[row][k]
+
+    # particular solution
+    x_particular = [0] * m
+    for (row, col) in zip(row_space, col_space):
+        x_particular[col] = A[row][-1]
+
+    # special solutions
+    x_special = []
+    nullspace = [x for x in range(m) if x not in col_space]
+    for ncol in nullspace:
+        sol = [0] * m
+        sol[ncol] = 1
+        for (row, col) in zip(row_space, col_space):
+            sol[col] = - A[row][ncol]
+        x_special.append(sol)
+
+    return x_particular, x_special
 
 
 lgs0 = '\n'.join(['1 3 0 2 1'
@@ -43,7 +70,11 @@ lgs0 = '\n'.join(['1 3 0 2 1'
 
 lgs1 = '\n'.join(['1 2 0 0 7'
                      , '0 3 4 0 8'
+                  , '0 0 0 0 0'
                      , '0 0 5 6 9'])
+
+lgs2 = '\n'.join(['1 5/2 1/2 0 4 1/8'
+                 ,'0 5 2 -5/2 6 2'])
 
 lgs8 = '\n'.join(['1/20 -10/3 -10/9 -13',
                   '-29 8 -27/4 0',
@@ -52,4 +83,4 @@ lgs9 = '1 2 2\n1 2 2\n2 4 4'
 
 lgs10 = '0 0 0 0\n0 0 0 0'
 
-print(*solve(lgs10), sep='\n')
+print(*solve(lgs2), sep='\n')
