@@ -36,9 +36,6 @@ def solve(system):
             row += 1
             col += 1
 
-    print(*A, sep='\n')
-    print()
-
     # from U to R
     for (row, col) in zip(row_space, col_space):
         for j in range(row):
@@ -61,7 +58,28 @@ def solve(system):
             sol[col] = - A[row][ncol]
         x_special.append(sol)
 
-    return x_particular, x_special
+    res = 'SOL=('
+    for x in x_particular:
+        if x.denominator == 1:
+            res += f'{x.numerator}'
+        else:
+            res += f'{x.numerator}/{x.denominator}'
+        res += ';'
+    res = res[:-1]
+    res += ')'
+
+    for n, sol in enumerate(x_special):
+        res += f'+q{n + 1}*('
+        for x in sol:
+            if x.denominator == 1:
+                res += f'{x.numerator}'
+            else:
+                res += f'{x.numerator}/{x.denominator}'
+            res += ';'
+        res = res[:-1]
+        res += ')'
+
+    return res
 
 
 lgs0 = '\n'.join(['1 3 0 2 1'
@@ -83,4 +101,4 @@ lgs9 = '1 2 2\n1 2 2\n2 4 4'
 
 lgs10 = '0 0 0 0\n0 0 0 0'
 
-print(*solve(lgs2), sep='\n')
+print(solve(lgs1), sep='\n')
