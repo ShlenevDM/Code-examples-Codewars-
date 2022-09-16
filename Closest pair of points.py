@@ -1,4 +1,4 @@
-# Closest pair of points, O(n ** 2)
+# Closest pair of points, O(n ** 2) complexity
 
 from collections import defaultdict
 
@@ -17,3 +17,10 @@ def closest_points(coord):
 
 
 print(closest_points([(8, 14), (16, 5), (5, 5), (15, 18), (17, 10), (0, 14), (4, 15), (19, 17), (13, 16), (10, 18), (14, 13), (12, 14), (11, 15), (7, 15)]))
+
+# Closest pair of points, O(n * Log n) complexity
+
+def closest_points_divide_and_conquer(points):
+    n = len(points)
+    points = sorted(points, key=lambda x: x[0])          # to sort points by its X coordinate
+    left, right = points[:n // 2], points[n // 2:]
