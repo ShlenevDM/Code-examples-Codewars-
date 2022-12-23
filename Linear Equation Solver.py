@@ -42,8 +42,9 @@ def solve(*equations):
 
     eps = 10 ** -6
     for i in range(n):
-        q = max(abs(t[i]) for t in A[i:])
-        s = [t[i] for t in A].index(q)
+        rest = [t[i] for t in A[i:]]
+        q = max(rest, key=abs)
+        s = i + rest.index(q)
         A[i], A[s] = A[s], A[i]
 
         if abs(A[i][i]) < eps:
