@@ -40,27 +40,33 @@ def solve(*equations):
 
     parsing(equations)  # fill the matrix with coefficients
 
+    # row echelon
     eps = 10 ** -6
-    for i in range(n):
+    for i in range(min(n, m)):
         rest = [t[i] for t in A[i:]]
         q = max(rest, key=abs)
         s = i + rest.index(q)
         A[i], A[s] = A[s], A[i]
 
         if abs(A[i][i]) < eps:
-            continue
+            return
 
         pivot = A[i][i]
 
         for r in A[i + 1:]:
             c = r[i] / pivot
-            for k in range(i, m):
+            for k in range(i, m + 1):
                 r[k] -= c * A[i][k]
 
-    while all(abs(el) < eps for el in A[-1]):
-        A.remove(A[-1])
-        n -= 1
+    # remove zero rows at the end
+    for row in A[min(n, m):]:
+        if abs(row[-1]) > eps:
+            return
+        else:
+            A.remove(row)
+            n -= 1
 
+    # check if system is solvable
     if m != n:
         return
 
