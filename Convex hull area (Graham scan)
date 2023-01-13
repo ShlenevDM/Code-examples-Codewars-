@@ -1,11 +1,24 @@
 def hull_method(pointlist):
     p0 = min(pointlist, key=lambda x: (x[1], x[0]))
-    print(p0)
     pointlist.remove(p0)
     res = [p0]
     cross = lambda p1, p2, p3: (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
-    points = sorted(pointlist, key=lambda p1: (p1[1] - p0[1]) / ((p1[0] - p0[0]) ** 2 + ((p1[1] - p0[1]) ** 2)) ** 0.5)
-    return points
+    points = sorted(pointlist, key=lambda pi: ((-(pi[0] - p0[0]) / ((pi[0] - p0[0]) ** 2 + ((pi[1] - p0[1]) ** 2)) ** 0.5), (pi[0] - p0[0]) ** 2 + ((pi[1] - p0[1]) ** 2)))
+    print(p0)
+    print(points)
+    p1 = points.pop(0)
+    #print(p1)
+    res.append(p1)
+    for point in points:
+        p1, p2 = res[-2:]
+        print('points: ', p1, p2, point)
+        print(cross(p1, p2, point))
+        if cross(p1, p2, point) < 0:
+            print('pop')
+            res.pop(-1)
+        res.append(point)
+        #print(f'{res=}')
+    return res
 
 
-print(hull_method([[0, 0], [5, 3], [0, 5], [0, 3], [2, 3], [5, 3]]))
+print(hull_method([[2, 2], [9, 8], [2, 11], [0, 7], [7, 2]]))
