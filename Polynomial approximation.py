@@ -10,4 +10,5 @@ def solve_sequence(seq):
     elif n_max == 1:
         return lambda n: seq[0]
     for k in range(n_max):
+        pass
 
