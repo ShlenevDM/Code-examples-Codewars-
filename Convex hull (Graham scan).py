@@ -1,6 +1,9 @@
+"""https://www.codewars.com/kata/5657d8bdafec0a27c800000f
+ScyPy is blocked for this kata"""
+
+
 def hull_method(pointlist):
     pointlist = list(map(list, set(map(tuple, pointlist))))
-    #print(pointlist)
     p0 = min(pointlist, key=lambda x: (x[1], x[0]))
     pointlist.remove(p0)
     cross = lambda p1, p2, p3: (p2[0] - p1[0]) * (p3[1] - p1[1]) - (p2[1] - p1[1]) * (p3[0] - p1[0])
@@ -10,7 +13,6 @@ def hull_method(pointlist):
     for point in points:
         while True:
             p1, p2 = res[-2:]
-            #print(p1, p2, point)
             if cross(p1, p2, point) <= 0 and len(res) > 2:
                 res.pop(-1)
             elif cross(p1, p2, point) <= 0 and len(res) == 2:

@@ -1,3 +1,7 @@
+"""https://www.codewars.com/kata/56d6d927c9ae3f115b0008dd
+NumPy is disabled for this kata"""
+
+
 import re
 
 
